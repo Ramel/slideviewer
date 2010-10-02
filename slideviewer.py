@@ -14,8 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from itools
 from itools.gettext import MSG
 
+# Import from ikaaro
+from ikaaro.registry import register_resource_class
+
+# Import from itws
+from itws.repository import register_box
 from itws.sidebar.diaporama import Diaporama, DiaporamaTable
 
 

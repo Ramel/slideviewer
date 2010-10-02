@@ -31,6 +31,3 @@ __version__ = get_version()
 # Register skin
 path = get_abspath('ui')
 register_skin('slideviewer', path)
-
-# Register document type
-register_document_type(Slideviewer)
