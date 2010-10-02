@@ -1,6 +1,4 @@
 # -*- coding: UTF-8 -*-
-# Copyright (C) 2007-2008 Juan David Ibáñez Palomar <jdavid@itaapy.com>
-# Copyright (C) 2008 Nicolas Deram <nicolas@itaapy.com>
 # Copyright (C) 2010 Armel FORTUN <armel@maar.fr>>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,21 +14,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Import from itools
-from itools.core import get_abspath
-from itools.core import get_version
+from itools.gettext import MSG
 
-# Import from ikaaro
-from ikaaro.skins import register_skin
+from itws.sidebar.diaporama import Diaporama, DiaporamaTable
 
-from slideviewer import Slideviewer
 
-# The version
-__version__ = get_version()
+class Slideviewer(Diaporama):
 
-# Register skin
-path = get_abspath('ui')
-register_skin('slideviewer', path)
+    class_id = 'slideviewer'
+    class_version = '20101002'
+    class_title = MSG(u'Slideviewer')
+    class_description = MSG(u'Slideviewer')
 
-# Register document type
-register_document_type(Slideviewer)
+
+class SlideviewerTable(DiaporamaTable):
+    
+    class_id = 'slideviewer-table'
+
+
+################################################################################
+# Register
+################################################################################
+register_resource_class(Slideviewer)
+register_resource_class(SlideviewerTable)
+register_box(Slideviewer, allow_instanciation=True, is_content=True,
+    is_side=False)
