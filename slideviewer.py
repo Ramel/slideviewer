@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+# Copyright (C) 2009-2010 Henry Obein <henry@itaapy.com>
 # Copyright (C) 2010 Armel FORTUN <armel@maar.fr>>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -24,6 +25,8 @@ from ikaaro.registry import register_resource_class
 from itws.repository import register_box
 from itws.sidebar.diaporama import Diaporama, DiaporamaTable
 
+from slideviewer_views import Slideviewer_View
+
 
 class Slideviewer(Diaporama):
 
@@ -31,6 +34,8 @@ class Slideviewer(Diaporama):
     class_version = '20101002'
     class_title = MSG(u'Slideviewer')
     class_description = MSG(u'Slideviewer')
+
+    view = Slideviewer_View()
 
 
 class SlideviewerTable(DiaporamaTable):
