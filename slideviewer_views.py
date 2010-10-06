@@ -33,12 +33,32 @@ class Slideviewer_View(Diaporama_View):
         handler = table.handler
 
         title = resource.get_title(fallback=False)
+        namespace['title'] = title
         ids = list(handler.get_record_ids())
+        print("ids = %s" % ids)
         if not ids:
-            return {'an_image': {},
+            return {'images': {},
                     'title': title}
+        print("handler.get_records() = %s" % handler.get_records())
+        get_value = handler.get_record_value
 
+        namespace['images'] = []
         for record in handler.get_records():
-            print("record = %s" % record)
-            #an_image = {}
-            #t get_value = handler.get_record_value
+            #record = record[0]
+            print("record.__class__ = %s" % record.__class__)
+            print("record[0] = %s" % record[0])
+            print("get_catalog_values = %s" % record.get_catalog_values())
+            print('title = %s' % get_value(record, 'title'))
+            #print('title = %s' % record.get_property('title'))
+            namespace['images'].append({
+                'description': handler.get_record_value(record, 'description'),
+                'title': handler.get_record_value(record, 'title'),
+                'img_link': handler.get_record_value(record, 'img_link'),
+                'img_path': handler.get_record_value(record, 'img_path'),
+                '__id__': handler.get_record_value(record, '__id__'),
+                'target': handler.get_record_value(record, 'target')
+                })
+        
+        print("namespace = %s" % namespace)
+
+        return namespace

@@ -5,14 +5,15 @@
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
   <h3 stl:if="title" class="title">${title}</h3>
-  <div class="content" stl:if="banner">
-    <a stl:omit-tag="not banner/img_link" href="${banner/img_link}" title="${banner/title}"
-      target="${banner/target}">
-      <img src="${banner/img_path}" alt="${banner/description}" />
-    </a>
-  </div>
+  <ul>
+  <li stl:repeat="image images">
+    <!--<a href="${image/img_link}" title="${image/title}" target="${image/target}">-->
+      <img src="${image/img_path}/;thumb?width=256&amp;height=256" alt="${image/description}" />
+    <!--</a>-->
+  </li>
+  </ul>
 
-  <div class="content" stl:if="not banner">
+  <div class="content" stl:if="not images">
     No banner to show
   </div>
 
