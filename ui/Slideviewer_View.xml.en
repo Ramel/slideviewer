@@ -5,16 +5,22 @@
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
   <h3 stl:if="title" class="title">${title}</h3>
-  <ul>
-  <li stl:repeat="image images">
-    <!--<a href="${image/img_link}" title="${image/title}" target="${image/target}">-->
-      <img src="${image/img_path}/;thumb?width=256&amp;height=256" alt="${image/description}" />
-    <!--</a>-->
-  </li>
-  </ul>
-
+  <div id="${cssid}" stl:if="images">
+    <ul>
+      <li stl:repeat="image images">
+        <!--<a href="${image/img_link}" title="${image/title}" target="${image/target}">-->
+          <img src="${image/img_path}/;thumb?width=256&amp;height=256" alt="${image/description}" />
+	<!--</a>-->
+      </li>
+    </ul>
+  </div>
+  <script type="text/javascript" stl:if="images">
+    $(window).bind("load", function() {
+      $("div#${cssid}").slideView();
+    });
+  </script>
   <div class="content" stl:if="not images">
-    No banner to show
+    No images to show in the "Slideviewer"!
   </div>
 
 </stl:block>
