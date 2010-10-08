@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.handlers import checkid
 
 # Import from ikaaro
 
@@ -44,10 +45,7 @@ class Slideviewer_View(Diaporama_View):
                     'title': title}
 
         get_value = handler.get_record_value
-        #print("self.id = %s, title = %s" % (id(self), title))
-        css_id = "%s-%s" % (title.lower(), id(self))
-        #print("css_id = %s" % css_id)
-        namespace['cssid'] = css_id
+        namespace['cssid'] = "%s-%s" % (checkid(title), id(self))
         namespace['images'] = []
 
         for record in handler.get_records():
@@ -59,7 +57,7 @@ class Slideviewer_View(Diaporama_View):
                 'description': get_value(record, 'description'),
                 'title': get_value(record, 'title'),
                 'img_link': get_value(record, 'img_link'),
-                # TODO: Get a ./ link instead of a /ws-data/page/img_path/
+                # TODO: Get a ./ link instead of a /section/page/img/
                 'img_path': img_path,
                 '__id__': get_value(record, '__id__'),
                 'target': get_value(record, 'target')
