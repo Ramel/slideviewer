@@ -17,11 +17,21 @@
 
 # Import from itools
 from itools.handlers import checkid
+from itools.datatypes import Integer, Unicode, DateTime
+from itools.gettext import MSG
+from itools.core import merge_dicts
 
 # Import from ikaaro
+from ikaaro import messages
+from ikaaro.forms import TextWidget
+from ikaaro.resource_views import DBResource_Edit
+from ikaaro.forms import timestamp_widget, title_widget
+from ikaaro.views import CompositeForm
 
 # Import from itws
 from itws.sidebar.diaporama_views import Diaporama_View
+from itws.sidebar.diaporama_views import DiaporamaTable_View, DiaporamaTable_AddRecord
+from itws.sidebar.diaporama_views import DiaporamaProxyBox_Edit
 
 
 class Slideviewer_View(Diaporama_View):
@@ -39,6 +49,7 @@ class Slideviewer_View(Diaporama_View):
 
         title = resource.get_title(fallback=False)
         namespace['title'] = title
+
         ids = list(handler.get_record_ids())
         if not ids:
             return {'images': {},
@@ -64,3 +75,58 @@ class Slideviewer_View(Diaporama_View):
                 })
 
         return namespace
+
+
+class SlideviewerProxyBox_Edit(DBResource_Edit):
+
+    schema = merge_dicts(DiaporamaProxyBox_Edit.schema,
+                                   {"width": Integer})
+
+    widgets = DiaporamaProxyBox_Edit.widgets + [
+        TextWidget('width', width=MSG(u'Width(px)'), size=3)]
+
+    def get_value(self, resource, context, name, datatype):
+        if name == 'title':
+            language = resource.get_content_language(context)
+            return resource.parent.get_property(name, language=language)
+        if name == 'width':
+            return resource.parent.get_property(name)
+        return DBResource_Edit.get_value(self, resource, context, name,
+                                         datatype)
+
+    def action(self, resource, context, form):
+        # Check edit conflict
+        self.check_edit_conflict(resource, context, form)
+        if context.edit_conflict:
+            return
+
+        # Save changes
+        title = form['title']
+        width = form['width']
+        language = resource.get_content_language(context)
+        # Set title to menufolder
+        resource.parent.set_property('title', title, language=language)
+        resource.parent.set_property('width', width)
+        # Ok
+        context.message = messages.MSG_CHANGES_SAVED
+
+
+class SlideviewerTable_CompositeView(CompositeForm):
+
+    access = 'is_allowed_to_edit'
+
+    subviews = [ # diaporama folder edition view
+                 SlideviewerProxyBox_Edit(title=MSG(u'Edit diaporama title and size')),
+                 DiaporamaTable_AddRecord(title=MSG(u'Add new image')),
+                 DiaporamaTable_View()
+                 ]
+
+    def get_namespace(self, resource, context):
+        # XXX Force GET to avoid problem in STLForm.get_namespace
+        # side effect unknown
+        real_method = context.method
+        context.method = 'GET'
+        views = [ view.GET(resource, context) for view in
+        self.subviews ]
+        context.method = real_method
+        return {'views': views}

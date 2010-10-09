@@ -17,36 +17,55 @@
 
 # Import from itools
 from itools.gettext import MSG
+from itools.datatypes import String, Unicode
+from itools.datatypes import Integer
+from itools.core import merge_dicts
 
 # Import from ikaaro
 from ikaaro.registry import register_resource_class
+from ikaaro.forms import TextWidget
+from ikaaro.folder import Folder
+from ikaaro.future.menu import Target
 
 # Import from itws
 from itws.repository import register_box
 from itws.sidebar.diaporama import Diaporama, DiaporamaTable
+from itws.sidebar.diaporama import DiaporamaTableFile
+from itws.sidebar.diaporama import DiaporamaImagePathDatatype
 
-from slideviewer_views import Slideviewer_View
+from slideviewer_views import Slideviewer_View, SlideviewerTable_CompositeView
+
+
+class SlideviewerTable(DiaporamaTable):
+
+    class_id = 'slideviewer-table'
+
+    view = SlideviewerTable_CompositeView()
 
 
 class Slideviewer(Diaporama):
 
     class_id = 'slideviewer'
-    class_version = '20101002'
+    class_version = '20101003'
     class_title = MSG(u'Slideviewer')
     class_description = MSG(u'Slideviewer')
 
+    # order
+    #order_path = 'order-banners'
+    order_class = SlideviewerTable
+
+    @classmethod
+    def get_metadata_schema(cls):
+        return merge_dicts(Diaporama.get_metadata_schema(),
+            {'width': Integer})
+
     view = Slideviewer_View()
-
-
-class SlideviewerTable(DiaporamaTable):
-    
-    class_id = 'slideviewer-table'
 
 
 ################################################################################
 # Register
 ################################################################################
 register_resource_class(Slideviewer)
-register_resource_class(SlideviewerTable)
+#register_resource_class(SlideviewerTable)
 register_box(Slideviewer, allow_instanciation=True, is_content=True,
     is_side=False)
