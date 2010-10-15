@@ -17,7 +17,7 @@
   <script type="text/javascript" stl:if="images">
     $(window).bind("load", function() {
       $("div#${cssid}").slideView();
-      $("div#${cssid}").css({"border-color": "${border}"});
+      $("div#${cssid}").css("background-color", "${border}").css("border-color", "${border}");
     });
   </script>
   <div class="content" stl:if="not images">
