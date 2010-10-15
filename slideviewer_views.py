@@ -24,7 +24,7 @@ from itools.core import merge_dicts
 # Import from ikaaro
 from ikaaro import messages
 from ikaaro.forms import TextWidget
-from ikaaro.resource_views import DBResource_Edit
+from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
 from ikaaro.views import CompositeForm
 
 # Import from itws
@@ -144,6 +144,7 @@ class SlideviewerTable_CompositeView(CompositeForm):
                  DiaporamaTable_AddRecord(title=MSG(u'Add new image')),
                  DiaporamaTable_View()
                  ]
+    context_menus = [EditLanguageMenu()]
 
     def get_namespace(self, resource, context):
         # XXX Force GET to avoid problem in STLForm.get_namespace

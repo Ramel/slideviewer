@@ -22,6 +22,7 @@ from itools.core import merge_dicts
 
 # Import from ikaaro
 from ikaaro.registry import register_resource_class
+from ikaaro.folder_views import GoToSpecificDocument
 
 # Import from itws
 from itws.repository import register_box
@@ -33,6 +34,7 @@ from slideviewer_views import Slideviewer_View, SlideviewerTable_CompositeView
 class SlideviewerTable(DiaporamaTable):
 
     class_id = 'slideviewer-table'
+    #class_views = ['view', 'commit_log']
 
     view = SlideviewerTable_CompositeView()
 
@@ -47,6 +49,11 @@ class Slideviewer(Diaporama):
     # order
     #order_path = 'order-banners'
     order_class = SlideviewerTable
+    #__fixed_handlers__ = Diaporama.__fixed_handlers__ + [order_path]
+
+    #edit = GoToSpecificDocument(specific_document='order-banners',
+    #    title=MSG(u'Edit'))
+    view = Slideviewer_View()
 
     @classmethod
     def get_metadata_schema(cls):
@@ -56,8 +63,6 @@ class Slideviewer(Diaporama):
             'border': Unicode(default="#FF0000"),
             'square': Unicode(default="#FF0000")
             })
-
-    view = Slideviewer_View()
 
 
 ################################################################################
