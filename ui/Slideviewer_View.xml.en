@@ -9,7 +9,7 @@
     <ul>
       <li stl:repeat="image images">
         <!--<a href="${image/img_link}" title="${image/title}" target="${image/target}">-->
-          <img src="${image/img_path}/;thumb?width=256&amp;height=256" alt="${image/description}" />
+          <img src="${image/img_path}/;thumb?width=${width}&amp;height=${height}" alt="${image/description}" />
 	<!--</a>-->
       </li>
     </ul>

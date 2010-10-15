@@ -31,9 +31,19 @@ jQuery.fn.slideView = function(settings) {
 		container.find("img.ldrgif").remove();
 		container.removeClass("svw").addClass("stripViewer");
 		var pictWidth = container.find("img").width();
+		//console.log("pictWidth = " + pictWidth);
 		var pictHeight = container.find("img").height();
 		var pictEls = container.find("li").size();
+		// Find the larger image
+		var maxi = 0;
+		for(i=0; i<pictEls; i++) {
+			var imgWidth = container.parent().find("ul").find("li").eq(i).find("img").width();
+			if(imgWidth > maxi) { pictWidth = imgWidth; }
+			maxi =  pictWidth;
+		}
+		jQuery(this).parent().find("ul").find("li").eq(0).find("a").attr({ style: "width:"+pictWidth+"px;display:block"});
 		var stripViewerWidth = pictWidth*pictEls;
+		var imageWidth = new Array();
 		container.find("ul").css("width" , stripViewerWidth);
 		container.css("width" , pictWidth);
 		container.css("height" , pictHeight);
@@ -41,17 +51,41 @@ jQuery.fn.slideView = function(settings) {
     (!settings.uiBefore) ? jQuery(this).after("<div class='stripTransmitter' id='stripTransmitter" + (j) + "'><ul><\/ul><\/div>") : jQuery(this).before("<div class='stripTransmitter' id='stripTransmitter" + (j) + "'><ul><\/ul><\/div>");
 		jQuery(this).find("li").each(function(n) {
 		jQuery("div#stripTransmitter" + j + " ul").append("<li><a title='" + jQuery(this).find("img").attr("alt") + "' href='#'>"+(n+1)+"<\/a><\/li>");
+		imageWidth[n] = jQuery(this).find("img").attr("width");
 		});
 		jQuery("div#stripTransmitter" + j + " a").each(function(z) {
 		jQuery(this).bind("click", function(){
 		jQuery(this).addClass("current").parent().parent().find("a").not(jQuery(this)).removeClass("current"); // wow!
-		var cnt = -(pictWidth*z);
-		container.find("ul").animate({ left: cnt}, settings.easeTime, settings.easeFunc);
+		///////////////////
+                // If the image's width is smaller than pictWidth,
+                // We resize the A tag to the pictWidth's size
+                if(imageWidth[z] < pictWidth) {
+                	// Add a new width to the A tag and display it as a block.
+                    	jQuery(this).parent().parent().parent().prev().find("ul").find("li").eq(z).find("a").attr({ style: "width:"+pictWidth+"px;display:block"});
+                    	// Change the pictWidth to the new A size
+                    	imageWidth[z] = pictWidth;
+                } else if (imageWidth[z] > pictWidth) {
+                    	imageWidth[z] = pictWidth;
+                    	jQuery(this).parent().parent().parent().prev().find("ul").find("li").eq(z).find("a").attr({ style: "width:"+pictWidth+"px;display:block;overflow:none;"});
+                }
+                // Create a new Array, and slice it at the actual position
+                var temp = new Array();
+                temp = imageWidth.slice(0,z);
+                var cnt = 0;
+                for(var i=0; i<temp.length; i++) {
+			// If the first image is less widther than the maxi image
+			if((imageWidth[i] < maxi) && (i==0)) {
+				cnt = Number(maxi)+cnt;
+			} else {
+				cnt = Number(imageWidth[i])+cnt;
+			}
+                }	
+		jQuery(this).parent().parent().parent().prev().find("ul").animate({ left: -cnt}, settings.easeTime, settings.easeFunc);
 		return false;
 		});
 		});
 
-
+		/*
 		container.bind("click", function(e){
 			var ui = (!settings.uiBefore) ? jQuery(this).next().find("a.current") : jQuery(this).prev().find("a.current");
 			var bTotal = parseFloat(jQuery(this).css('borderLeftWidth').replace("px", "")) +  parseFloat(jQuery(this).css('borderRightWidth').replace("px", ""));
@@ -66,7 +100,7 @@ jQuery.fn.slideView = function(settings) {
 			  (jQuery(uinext).length != 0)? uinext.trigger("click") : ui.parent().parent().find("a:first").trigger("click");
 			}
 		});
-
+		*/
 
 		jQuery("div#stripTransmitter" + j).css("width" , pictWidth);
 		jQuery("div#stripTransmitter" + j + " a:first").addClass("current");

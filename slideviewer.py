@@ -57,7 +57,8 @@ class Slideviewer(Diaporama):
     @classmethod
     def get_metadata_schema(cls):
         return merge_dicts(Diaporama.get_metadata_schema(),
-            {'width': Integer})
+            {'width': Integer(default=256), 
+            'height': Integer(default=256)})
 
     view = Slideviewer_View()
 

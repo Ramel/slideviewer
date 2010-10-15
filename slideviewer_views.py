@@ -49,6 +49,9 @@ class Slideviewer_View(Diaporama_View):
 
         title = resource.get_title(fallback=False)
         namespace['title'] = title
+        namespace['width'] = resource.get_property('width')
+        namespace['height'] = resource.get_property('height')
+        #print(resource.get_property('width'))
 
         ids = list(handler.get_record_ids())
         if not ids:
@@ -80,16 +83,19 @@ class Slideviewer_View(Diaporama_View):
 class SlideviewerProxyBox_Edit(DBResource_Edit):
 
     schema = merge_dicts(DiaporamaProxyBox_Edit.schema,
-                                   {"width": Integer})
+        {"width": Integer, "height": Integer})
 
     widgets = DiaporamaProxyBox_Edit.widgets + [
-        TextWidget('width', width=MSG(u'Width(px)'), size=3)]
+        TextWidget('width', title=MSG(u'Width (px)'), size=3),
+        TextWidget('height', title=MSG(u'Height (px)'), size=3)]
 
     def get_value(self, resource, context, name, datatype):
         if name == 'title':
             language = resource.get_content_language(context)
             return resource.parent.get_property(name, language=language)
         if name == 'width':
+            return resource.parent.get_property(name)
+        if name == 'height':
             return resource.parent.get_property(name)
         return DBResource_Edit.get_value(self, resource, context, name,
                                          datatype)
@@ -103,10 +109,12 @@ class SlideviewerProxyBox_Edit(DBResource_Edit):
         # Save changes
         title = form['title']
         width = form['width']
+        height = form['height']
         language = resource.get_content_language(context)
         # Set title to menufolder
         resource.parent.set_property('title', title, language=language)
         resource.parent.set_property('width', width)
+        resource.parent.set_property('height', height)
         # Ok
         context.message = messages.MSG_CHANGES_SAVED
 
