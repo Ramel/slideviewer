@@ -17,7 +17,7 @@
 
 # Import from itools
 from itools.gettext import MSG
-from itools.datatypes import Integer
+from itools.datatypes import Integer, Unicode
 from itools.core import merge_dicts
 
 # Import from ikaaro
@@ -52,7 +52,9 @@ class Slideviewer(Diaporama):
     def get_metadata_schema(cls):
         return merge_dicts(Diaporama.get_metadata_schema(),
             {'width': Integer(default=256),
-            'height': Integer(default=256)
+            'height': Integer(default=256),
+            'border': Unicode(default="#FF0000"),
+            'square': Unicode(default="#FF0000")
             })
 
     view = Slideviewer_View()
@@ -62,6 +64,5 @@ class Slideviewer(Diaporama):
 # Register
 ################################################################################
 register_resource_class(Slideviewer)
-#register_resource_class(SlideviewerTable)
 register_box(Slideviewer, allow_instanciation=True, is_content=True,
     is_side=False)

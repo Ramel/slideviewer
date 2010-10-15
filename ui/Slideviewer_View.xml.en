@@ -6,7 +6,7 @@
 
   <h3 stl:if="title" class="title">${title}</h3>
   <div id="${cssid}" stl:if="images">
-    <ul>
+    <ul class="${square}">
       <li stl:repeat="image images">
         <a>
           <img src="${image/img_path}/;thumb?width=${width}&amp;height=${height}" alt="${image/description}" />
@@ -17,6 +17,7 @@
   <script type="text/javascript" stl:if="images">
     $(window).bind("load", function() {
       $("div#${cssid}").slideView();
+      $("div#${cssid}").css({"border-color": "${border}"});
     });
   </script>
   <div class="content" stl:if="not images">

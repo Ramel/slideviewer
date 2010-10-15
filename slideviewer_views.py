@@ -17,7 +17,7 @@
 
 # Import from itools
 from itools.handlers import checkid
-from itools.datatypes import Integer
+from itools.datatypes import Integer, Unicode
 from itools.gettext import MSG
 from itools.core import merge_dicts
 
@@ -50,6 +50,8 @@ class Slideviewer_View(Diaporama_View):
         namespace['title'] = title
         namespace['width'] = resource.get_property('width')
         namespace['height'] = resource.get_property('height')
+        namespace['border'] = resource.get_property('border')
+        namespace['square'] = resource.get_property('square')
         #print(resource.get_property('width'))
 
         ids = list(handler.get_record_ids())
@@ -82,11 +84,17 @@ class Slideviewer_View(Diaporama_View):
 class SlideviewerProxyBox_Edit(DBResource_Edit):
 
     schema = merge_dicts(DiaporamaProxyBox_Edit.schema,
-        {"width": Integer, "height": Integer})
+        {"width": Integer,
+        "height": Integer,
+        "border": Unicode,
+        "square": Unicode
+        })
 
     widgets = DiaporamaProxyBox_Edit.widgets + [
         TextWidget('width', title=MSG(u'Width (px)'), size=3),
-        TextWidget('height', title=MSG(u'Height (px)'), size=3)
+        TextWidget('height', title=MSG(u'Height (px)'), size=3),
+        TextWidget('border', title=MSG(u'Border-color (#hexade)'), size=7),
+        TextWidget('square', title=MSG(u'Square\'s color (#hexade)'), size=7)
         ]
 
     def get_value(self, resource, context, name, datatype):
@@ -96,6 +104,10 @@ class SlideviewerProxyBox_Edit(DBResource_Edit):
         if name == 'width':
             return resource.parent.get_property(name)
         if name == 'height':
+            return resource.parent.get_property(name)
+        if name == 'border':
+            return resource.parent.get_property(name)
+        if name == 'square':
             return resource.parent.get_property(name)
         return DBResource_Edit.get_value(self, resource, context, name,
                                          datatype)
@@ -110,11 +122,15 @@ class SlideviewerProxyBox_Edit(DBResource_Edit):
         title = form['title']
         width = form['width']
         height = form['height']
+        border = form['border']
+        square = form['square']
         language = resource.get_content_language(context)
         # Set title to menufolder
         resource.parent.set_property('title', title, language=language)
         resource.parent.set_property('width', width)
         resource.parent.set_property('height', height)
+        resource.parent.set_property('border', border)
+        resource.parent.set_property('square', square)
         # Ok
         context.message = messages.MSG_CHANGES_SAVED
 
