@@ -87,7 +87,8 @@ class SlideviewerProxyBox_Edit(DBResource_Edit):
 
     widgets = DiaporamaProxyBox_Edit.widgets + [
         TextWidget('width', title=MSG(u'Width (px)'), size=3),
-        TextWidget('height', title=MSG(u'Height (px)'), size=3)]
+        TextWidget('height', title=MSG(u'Height (px)'), size=3)
+        ]
 
     def get_value(self, resource, context, name, datatype):
         if name == 'title':

@@ -8,9 +8,9 @@
   <div id="${cssid}" stl:if="images">
     <ul>
       <li stl:repeat="image images">
-        <!--<a href="${image/img_link}" title="${image/title}" target="${image/target}">-->
+        <a>
           <img src="${image/img_path}/;thumb?width=${width}&amp;height=${height}" alt="${image/description}" />
-	<!--</a>-->
+	</a>
       </li>
     </ul>
   </div>
