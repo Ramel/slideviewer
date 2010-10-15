@@ -17,7 +17,7 @@
 
 # Import from itools
 from itools.handlers import checkid
-from itools.datatypes import Integer, Unicode, DateTime
+from itools.datatypes import Integer
 from itools.gettext import MSG
 from itools.core import merge_dicts
 
@@ -25,7 +25,6 @@ from itools.core import merge_dicts
 from ikaaro import messages
 from ikaaro.forms import TextWidget
 from ikaaro.resource_views import DBResource_Edit
-from ikaaro.forms import timestamp_widget, title_widget
 from ikaaro.views import CompositeForm
 
 # Import from itws

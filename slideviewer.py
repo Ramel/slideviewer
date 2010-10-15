@@ -17,21 +17,15 @@
 
 # Import from itools
 from itools.gettext import MSG
-from itools.datatypes import String, Unicode
 from itools.datatypes import Integer
 from itools.core import merge_dicts
 
 # Import from ikaaro
 from ikaaro.registry import register_resource_class
-from ikaaro.forms import TextWidget
-from ikaaro.folder import Folder
-from ikaaro.future.menu import Target
 
 # Import from itws
 from itws.repository import register_box
 from itws.sidebar.diaporama import Diaporama, DiaporamaTable
-from itws.sidebar.diaporama import DiaporamaTableFile
-from itws.sidebar.diaporama import DiaporamaImagePathDatatype
 
 from slideviewer_views import Slideviewer_View, SlideviewerTable_CompositeView
 
