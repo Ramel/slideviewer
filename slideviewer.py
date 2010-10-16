@@ -47,9 +47,7 @@ class SlideviewerTableFile(OrderedTableFile):
 class SlideviewerTable(DiaporamaTable):
 
     class_id = 'slideviewer-table'
-    class_handler = SlideviewerTableFile 
-
-    #class_views = ['view', 'commit_log']
+    class_handler = SlideviewerTableFile
 
     view = SlideviewerTable_CompositeView()
 
@@ -62,12 +60,8 @@ class Slideviewer(Diaporama):
     class_description = MSG(u'Slideviewer')
 
     # order
-    #order_path = 'order-banners'
     order_class = SlideviewerTable
-    #__fixed_handlers__ = Diaporama.__fixed_handlers__ + [order_path]
 
-    #edit = GoToSpecificDocument(specific_document='order-banners',
-    #    title=MSG(u'Edit'))
     view = Slideviewer_View()
 
     @classmethod

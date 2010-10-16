@@ -70,7 +70,7 @@ class Slideviewer_View(Diaporama_View):
         namespace['cssid'] = "%s" % id(self)
         namespace['images'] = []
 
-        for record in handler.get_records():
+        for record in handler.get_records_in_order():
             img_path = get_value(record, 'img_path')
             img_path_resource = table.get_resource(str(img_path), soft=True)
             if img_path_resource:
@@ -199,10 +199,9 @@ class SlideviewerTable_CompositeView(CompositeForm):
     subviews = [ # diaporama folder edition view
                  SlideviewerProxyBox_Edit(title=MSG(u'Edit diaporama title and size')),
                  DiaporamaTable_AddRecord(title=MSG(u'Add new image')),
-                 #DiaporamaTable_View(),
                  SlideviewerTable_View()
                  ]
-    
+
     context_menus = [EditLanguageMenu()]
 
     def get_namespace(self, resource, context):
