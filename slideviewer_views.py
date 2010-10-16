@@ -17,13 +17,13 @@
 
 # Import from itools
 from itools.handlers import checkid
-from itools.datatypes import Integer, Unicode
+from itools.datatypes import Integer, Unicode, Boolean
 from itools.gettext import MSG
 from itools.core import merge_dicts
 
 # Import from ikaaro
 from ikaaro import messages
-from ikaaro.forms import TextWidget
+from ikaaro.forms import TextWidget, BooleanRadio
 from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
 from ikaaro.views import CompositeForm
 
@@ -52,7 +52,7 @@ class Slideviewer_View(Diaporama_View):
         namespace['height'] = resource.get_property('height')
         namespace['border'] = resource.get_property('border')
         namespace['square'] = resource.get_property('square')
-        #print(resource.get_property('width'))
+        namespace['show_border'] = resource.get_property('show_border')
 
         ids = list(handler.get_record_ids())
         if not ids:
@@ -87,14 +87,18 @@ class SlideviewerProxyBox_Edit(DBResource_Edit):
         {"width": Integer,
         "height": Integer,
         "border": Unicode,
-        "square": Unicode
+        "square": Unicode,
+        "show_border": Boolean
         })
 
     widgets = DiaporamaProxyBox_Edit.widgets + [
-        TextWidget('width', title=MSG(u'Width (px)'), size=3),
-        TextWidget('height', title=MSG(u'Height (px)'), size=3),
-        TextWidget('border', title=MSG(u'Border-color (#hexade)'), size=7),
-        TextWidget('square', title=MSG(u'Square\'s color (#hexade)'), size=7)
+        TextWidget('width', title=MSG(u'Width (px)'), size=4, maxlength=4),
+        TextWidget('height', title=MSG(u'Height (px)'), size=4, maxlength=4),
+        TextWidget('border', title=MSG(u'Image border-color (#FF0000)'),
+            size=7, maxlength=7),
+        TextWidget('square', title=MSG(u'Square\'s color (#FF0000)'),
+            size=7, maxlength=7),
+        BooleanRadio('show_border', title=MSG(u'Show images border-color'))
         ]
 
     def get_value(self, resource, context, name, datatype):
@@ -108,6 +112,8 @@ class SlideviewerProxyBox_Edit(DBResource_Edit):
         if name == 'border':
             return resource.parent.get_property(name)
         if name == 'square':
+            return resource.parent.get_property(name)
+        if name == 'show_border':
             return resource.parent.get_property(name)
         return DBResource_Edit.get_value(self, resource, context, name,
                                          datatype)
@@ -124,6 +130,7 @@ class SlideviewerProxyBox_Edit(DBResource_Edit):
         height = form['height']
         border = form['border']
         square = form['square']
+        show_border = form['show_border']
         language = resource.get_content_language(context)
         # Set title to menufolder
         resource.parent.set_property('title', title, language=language)
@@ -131,6 +138,7 @@ class SlideviewerProxyBox_Edit(DBResource_Edit):
         resource.parent.set_property('height', height)
         resource.parent.set_property('border', border)
         resource.parent.set_property('square', square)
+        resource.parent.set_property('show_border', show_border)
         # Ok
         context.message = messages.MSG_CHANGES_SAVED
 

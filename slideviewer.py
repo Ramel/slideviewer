@@ -17,7 +17,7 @@
 
 # Import from itools
 from itools.gettext import MSG
-from itools.datatypes import Integer, Unicode
+from itools.datatypes import Integer, Unicode, Boolean
 from itools.core import merge_dicts
 
 # Import from ikaaro
@@ -61,7 +61,8 @@ class Slideviewer(Diaporama):
             {'width': Integer(default=256),
             'height': Integer(default=256),
             'border': Unicode(default="#FF0000"),
-            'square': Unicode(default="#FF0000")
+            'square': Unicode(default="#FF0000"),
+            'show_border': Boolean(default=True)
             })
 
 
