@@ -15,17 +15,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from the Standard Library
+from copy import deepcopy
+
 # Import from itools
 from itools.handlers import checkid
-from itools.datatypes import Integer, Unicode, Boolean
+from itools.datatypes import Integer, Unicode, Boolean, XMLContent
 from itools.gettext import MSG
 from itools.core import merge_dicts
+from itools.uri import get_reference
+from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro import messages
 from ikaaro.forms import TextWidget, BooleanRadio
 from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
 from ikaaro.views import CompositeForm
+from ikaaro.table_views import Table_View, OrderedTable_View
+from ikaaro.future.order import get_resource_preview
 
 # Import from itws
 from itws.sidebar.diaporama_views import Diaporama_View
@@ -60,7 +67,7 @@ class Slideviewer_View(Diaporama_View):
                     'title': title}
 
         get_value = handler.get_record_value
-        namespace['cssid'] = "%s-%s" % (checkid(title), id(self))
+        namespace['cssid'] = "%s" % id(self)
         namespace['images'] = []
 
         for record in handler.get_records():
@@ -143,6 +150,48 @@ class SlideviewerProxyBox_Edit(DBResource_Edit):
         context.message = messages.MSG_CHANGES_SAVED
 
 
+class SlideviewerTable_View(OrderedTable_View):
+
+    def get_item_value(self, resource, context, item, column):
+        if column == 'img_path':
+            img_path = resource.handler.get_record_value(item, column)
+            # NOTE img_path is unicode multiple -> multilingual
+            image = resource.get_resource(str(img_path), soft=True)
+            if not image:
+                return None
+            return get_resource_preview(image, 128, 64, 0, context)
+        elif column == 'img_link':
+            img_link = resource.handler.get_record_value(item, column)
+            reference = get_reference(img_link)
+            if reference.scheme:
+                # Encode the reference '&' to avoid XMLError
+                reference = XMLContent.encode(str(reference))
+                return XMLParser('<a href="%s">%s</a>' % (reference, reference))
+            # Split path/view
+            reference_path = str(reference.path)
+            view = None
+            if reference_path.count(';'):
+                reference_path, view = reference_path.split('/;' ,1)
+            item_resource = resource.get_resource(reference_path, soft=True)
+            if not item_resource:
+                # Not found, just return the reference
+                # Encode the reference '&' to avoid XMLError
+                return XMLContent.encode(str(reference))
+            # Build the new reference with the right path
+            reference2 = deepcopy(reference)
+            reference2.path = context.get_link(item_resource)
+            if view:
+                # Append the view
+                reference2.path = '%s/;%s' % (reference2.path, view)
+            # Encode the reference '&' to avoid XMLError
+            # Reference : the reference used for the a content
+            reference = XMLContent.encode(str(reference))
+            # Reference2 : the reference used for href attribute
+            reference2 = XMLContent.encode(str(reference2))
+            return XMLParser('<a href="%s">%s</a>' % (reference2, reference))
+        return Table_View.get_item_value(self, resource, context, item, column)
+
+
 class SlideviewerTable_CompositeView(CompositeForm):
 
     access = 'is_allowed_to_edit'
@@ -150,8 +199,10 @@ class SlideviewerTable_CompositeView(CompositeForm):
     subviews = [ # diaporama folder edition view
                  SlideviewerProxyBox_Edit(title=MSG(u'Edit diaporama title and size')),
                  DiaporamaTable_AddRecord(title=MSG(u'Add new image')),
-                 DiaporamaTable_View()
+                 #DiaporamaTable_View(),
+                 SlideviewerTable_View()
                  ]
+    
     context_menus = [EditLanguageMenu()]
 
     def get_namespace(self, resource, context):

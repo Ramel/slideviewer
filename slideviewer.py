@@ -17,23 +17,38 @@
 
 # Import from itools
 from itools.gettext import MSG
-from itools.datatypes import Integer, Unicode, Boolean
+from itools.datatypes import Integer, Unicode, Boolean, String
 from itools.core import merge_dicts
 
 # Import from ikaaro
 from ikaaro.registry import register_resource_class
 from ikaaro.folder_views import GoToSpecificDocument
+from ikaaro.table import OrderedTableFile
+from ikaaro.future.menu import Target
 
 # Import from itws
 from itws.repository import register_box
-from itws.sidebar.diaporama import Diaporama, DiaporamaTable
+from itws.sidebar.diaporama import Diaporama, DiaporamaTable, DiaporamaImagePathDatatype
 
 from slideviewer_views import Slideviewer_View, SlideviewerTable_CompositeView
+
+
+class SlideviewerTableFile(OrderedTableFile):
+
+    record_properties = {
+        'title': Unicode(multiple=True),
+        'description': Unicode(multiple=True),
+        'img_path': DiaporamaImagePathDatatype(multiple=True,
+            mandatory=True), # multilingual
+        'img_link': String,
+        'target': Target(mandatory=True, default='_top')}
 
 
 class SlideviewerTable(DiaporamaTable):
 
     class_id = 'slideviewer-table'
+    class_handler = SlideviewerTableFile 
+
     #class_views = ['view', 'commit_log']
 
     view = SlideviewerTable_CompositeView()

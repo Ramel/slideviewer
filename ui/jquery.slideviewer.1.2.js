@@ -17,7 +17,7 @@
  */
 
 jQuery(function(){
-    jQuery("div.svw").prepend("<div style='text-align:center' class='ldrgif'><img style='margin-top:150px' src='./lib/loadingAnimation.gif' alt='Chargement...'/ ></div>");
+    jQuery("div.svw").prepend("<div style='text-align:center' class='ldrgif'><div style='vertical-align:middle'><img style='' src='./lib/loadingAnimation.gif' alt='Loading...'/ ></div></div>");
     //jQuery("div.svw").prepend("<img src='spinner.gif' class='ldrgif' alt='loading...'/ >");
 });
 var j = 0;
@@ -47,11 +47,11 @@ jQuery.fn.slideView = function(settings) {
             var imgWidth = container.parent().find("ul").find("li").eq(i).find("img").width();
             if(imgWidth > maxi) { pictWidth = imgWidth; }
             maxi =  pictWidth;
+        // Add a line-height, used with a vertical-align:middle the images in the SV
+        jQuery(this).parent().find("ul").find("li").eq(i).find("a").css("line-height", pictHeight+"px");
         }
         // Add style for first A tag, that give the dimension to the SV
-        jQuery(this).parent().find("ul").find("li").eq(0).find("a").attr({ style: "width:"+pictWidth+"px;display:block;"});
-        // Add a line-height, used with a vertical-align:middle the images in the SV
-        jQuery(this).parent().find("ul").find("li").find("a").css({ "line-height": pictHeight+"px"});
+        jQuery(this).parent().find("ul").find("li").eq(0).find("a").attr({ style: "width:"+pictWidth+"px;display:block;line-height:"+pictHeight+"px"});
         var stripViewerWidth = pictWidth*pictEls;
         var imageWidth = new Array();
         container.find("ul").css("width" , stripViewerWidth);
@@ -63,7 +63,6 @@ jQuery.fn.slideView = function(settings) {
                 jQuery("div#stripTransmitter" + j + " ul").append("<li><a title='" + jQuery(this).find("img").attr("alt") + "' href='#'>"+(n+1)+"<\/a><\/li>");
                 imageWidth[n] = jQuery(this).find("img").attr("width");
             });
-            // Need to add color to .current
             jQuery("div#stripTransmitter" + j + " a").each(function(z) {
                 jQuery(this).bind("click", function(){
                     jQuery(this).addClass("current").css("background-color", "#fff").parent().parent().find("a").not(jQuery(this)).removeClass("current").not('.current').css("background-color", square); // wow!
@@ -72,12 +71,12 @@ jQuery.fn.slideView = function(settings) {
                     // We resize the A tag to the pictWidth's size
                     if(imageWidth[z] < pictWidth) {
                         // Add a new width to the A tag and display it as a block.
-                        jQuery(this).parent().parent().parent().prev().find("ul").find("li").eq(z).find("a").attr({ style: "width:"+pictWidth+"px;display:block"});
+                        jQuery(this).parent().parent().parent().prev().find("ul").find("li").eq(z).find("a").attr({ style: "width:"+pictWidth+"px;display:block;line-height:"+pictHeight+"px"});
                         // Change the pictWidth to the new A size
                         imageWidth[z] = pictWidth;
                     } else if (imageWidth[z] > pictWidth) {
                         imageWidth[z] = pictWidth;
-                        jQuery(this).parent().parent().parent().prev().find("ul").find("li").eq(z).find("a").attr({ style: "width:"+pictWidth+"px;display:block;overflow:none;"});
+                        jQuery(this).parent().parent().parent().prev().find("ul").find("li").eq(z).find("a").attr({ style: "width:"+pictWidth+"px;display:block;overflow:none;line-height:"+pictHeight+"px"});
                     }
                     // Create a new Array, and slice it at the actual position
                     var temp = new Array();
