@@ -41,14 +41,19 @@ jQuery.fn.slideView = function(settings) {
         var pictWidth = container.find("li").find("img").width();
         var pictHeight = container.find("li").find("img").height();
         var pictEls = container.find("li").size();
-        // Find the larger image
-        var maxi = 0;
+        // Find the larger and taller image value
+        var maxW, maxH = 0;
         for(i=0; i<pictEls; i++) {
             var imgWidth = container.parent().find("ul").find("li").eq(i).find("img").width();
-            if(imgWidth > maxi) { pictWidth = imgWidth; }
-            maxi =  pictWidth;
-        // Add a line-height, used with a vertical-align:middle the images in the SV
-        jQuery(this).parent().find("ul").find("li").eq(i).find("a").css("line-height", pictHeight+"px");
+            var imgHeight = container.parent().find("ul").find("li").eq(i).find("img").height();
+            if(imgWidth > maxW) { pictWidth = imgWidth; }
+            if(imgHeight > maxH) { pictHeight = imgHeight; }
+            maxW =  pictWidth;
+            maxH =  pictHeight;
+        }
+        for(i=0; i<pictEls; i++) {
+	    // Add a line-height, used with a vertical-align:middle the images in the SV
+	    jQuery(this).parent().find("ul").find("li").eq(i).find("a").css("line-height", pictHeight+"px");
         }
         // Add style for first A tag, that give the dimension to the SV
         jQuery(this).parent().find("ul").find("li").eq(0).find("a").attr({ style: "width:"+pictWidth+"px;display:block;line-height:"+pictHeight+"px"});
@@ -83,9 +88,9 @@ jQuery.fn.slideView = function(settings) {
                     temp = imageWidth.slice(0,z);
                     var cnt = 0;
                     for(var i=0; i<temp.length; i++) {
-                        // If the first image is smaller than the maxi image
-                        if((imageWidth[i] < maxi) && (i==0)) {
-                            cnt = Number(maxi)+cnt;
+                        // If the first image is smaller than the maxW image
+                        if((imageWidth[i] < maxW) && (i==0)) {
+                            cnt = Number(maxW)+cnt;
                         } else {
                             cnt = Number(imageWidth[i])+cnt;
                         }
