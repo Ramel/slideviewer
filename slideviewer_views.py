@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 # Copyright (C) 2009-2010 Henry Obein <henry@itaapy.com>
-# Copyright (C) 2010 Armel FORTUN <armel@maar.fr>>
+# Copyright (C) 2010 Armel FORTUN <armel@maar.fr>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -47,6 +47,7 @@ class Slideviewer_View(Diaporama_View):
     styles = ['/ui/slideviewer/style.css']
     scripts = ['/ui/slideviewer/jquery.slideviewer.1.2.js',
         '/ui/slideviewer/jquery.easing.1.3.js']
+    uid = 0
 
     def get_namespace(self, resource, context):
         namespace = {}
@@ -67,7 +68,7 @@ class Slideviewer_View(Diaporama_View):
                     'title': title}
 
         get_value = handler.get_record_value
-        namespace['cssid'] = "%s" % id(self)
+        namespace['cssid'] = "%s-%s" % (checkid(title.replace('.','-')), self.uid)
         namespace['images'] = []
 
         for record in handler.get_records_in_order():
@@ -84,7 +85,7 @@ class Slideviewer_View(Diaporama_View):
                 '__id__': get_value(record, '__id__'),
                 'target': get_value(record, 'target')
                 })
-
+        self.uid += 1
         return namespace
 
 

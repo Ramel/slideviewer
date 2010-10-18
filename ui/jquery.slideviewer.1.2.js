@@ -33,7 +33,7 @@ jQuery.fn.slideView = function(settings) {
     return this.each(function(){
         var container = jQuery(this);
         container.find("div.ldrgif").remove();
-        // Get the square color
+        // Get the square color and remove the class
         var square = jQuery(this).parent().find("ul").attr("class");
         jQuery(this).parent().find("ul").removeAttr("class");
         //console.log(square); // For Firebug :-)
@@ -43,7 +43,7 @@ jQuery.fn.slideView = function(settings) {
         var pictEls = container.find("li").size();
         // Find the larger and taller image value
         var maxW, maxH = 0;
-        for(i=0; i<pictEls; i++) {
+        for(var i=0; i<pictEls; i++) {
             var imgWidth = container.parent().find("ul").find("li").eq(i).find("img").width();
             var imgHeight = container.parent().find("ul").find("li").eq(i).find("img").height();
             if(imgWidth > maxW) { pictWidth = imgWidth; }
@@ -51,7 +51,7 @@ jQuery.fn.slideView = function(settings) {
             maxW =  pictWidth;
             maxH =  pictHeight;
         }
-        for(i=0; i<pictEls; i++) {
+        for(var i=0; i<pictEls; i++) {
 	    // Add a line-height, used with a vertical-align:middle the images in the SV
 	    jQuery(this).parent().find("ul").find("li").eq(i).find("a").css("line-height", pictHeight+"px");
         }
@@ -62,13 +62,17 @@ jQuery.fn.slideView = function(settings) {
         container.find("ul").css("width" , stripViewerWidth);
         container.css("width" , pictWidth);
         container.css("height" , pictHeight);
-        container.each(function(i) {
+        container.each(function(o) {
             (!settings.uiBefore) ? jQuery(this).after("<div class='stripTransmitter' id='stripTransmitter" + (j) + "'><ul><\/ul><\/div>") : jQuery(this).before("<div class='stripTransmitter' id='stripTransmitter" + (j) + "'><ul><\/ul><\/div>");
             jQuery(this).find("li").each(function(n) {
                 jQuery("div#stripTransmitter" + j + " ul").append("<li><a title='" + jQuery(this).find("img").attr("alt") + "' href='#'>"+(n+1)+"<\/a><\/li>");
                 imageWidth[n] = jQuery(this).find("img").attr("width");
             });
-            jQuery("div#stripTransmitter" + j + " a").each(function(z) {
+            //console.log("j = " + j);
+            //console.log("container = " + container);
+            //console.log("jquery(this) = " + jQuery(this).value);
+            //console.log("settings.uiBefore = " + settings.uiBefore);
+	    jQuery("div#stripTransmitter" + j + " a").each(function(z) {
                 jQuery(this).bind("click", function(){
                     jQuery(this).addClass("current").css("background-color", "#fff").parent().parent().find("a").not(jQuery(this)).removeClass("current").not('.current').css("background-color", square); // wow!
                     ///////////////////
@@ -117,7 +121,6 @@ jQuery.fn.slideView = function(settings) {
 
             if(settings.toolTip){
                 var aref = jQuery("div#stripTransmitter" + j + " a");
-
                 aref.live('mousemove', function(e) {
                     var att = jQuery(this).attr('title');
                     posX=e.pageX+10;

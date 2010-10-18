@@ -80,4 +80,4 @@ class Slideviewer(Diaporama):
 ################################################################################
 register_resource_class(Slideviewer)
 register_box(Slideviewer, allow_instanciation=True, is_content=True,
-    is_side=False)
+    is_side=True)
