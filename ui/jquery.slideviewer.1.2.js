@@ -17,8 +17,7 @@
  */
 
 jQuery(function(){
-    jQuery("div.svw").prepend("<div style='text-align:center' class='ldrgif'><div style='vertical-align:middle'><img style='' src='./lib/loadingAnimation.gif' alt='Loading...'/ ></div></div>");
-    //jQuery("div.svw").prepend("<img src='spinner.gif' class='ldrgif' alt='loading...'/ >");
+    jQuery("div.svw").prepend("<div style='text-align:center' class='ldrgif'><div style='vertical-align:middle'><img style='' src='/images/loading/;thumb' alt='Loading...'/ ></div></div>");
 });
 var j = 0;
 var quantofamo = 0;

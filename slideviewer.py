@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright (C) 2009-2010 Henry Obein <henry@itaapy.com>
-# Copyright (C) 2010 Armel FORTUN <armel@maar.fr>>
+# Copyright (C) 2009-2010 Henry OBEIN <henry@itaapy.com>
+# Copyright (C) 2010 Armel FORTUN <armel@tchack.com>
+# Copyright (C) 2010 Hervé CAUWELIER <herve@itaapy.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,13 +19,14 @@
 # Import from itools
 from itools.gettext import MSG
 from itools.datatypes import Integer, Unicode, Boolean, String
-from itools.core import merge_dicts
+from itools.core import merge_dicts, get_abspath
+from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro.registry import register_resource_class
-from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.table import OrderedTableFile
 from ikaaro.future.menu import Target
+from ikaaro.file import Image
 
 # Import from itws
 from itws.repository import register_box
@@ -63,6 +65,22 @@ class Slideviewer(Diaporama):
     order_class = SlideviewerTable
 
     view = Slideviewer_View()
+
+    @staticmethod
+    def _make_resource(cls, folder, name, **kw):
+        Diaporama._make_resource(cls, folder, name, **kw)
+        # Check if the loading image is here!
+        context = get_context()
+        # XXX from handler level to resource one
+        # to find the site_root and indexing image
+        site_root = context.site_root
+        if site_root.get_resource('images/loading', soft=True) is None:
+            path = get_abspath('ui/loading.gif')
+            with open(path) as file:
+                body = file.read()
+            Image.make_resource(Image, site_root, 'images/loading',
+                    format='image/gif', filename='loading.gif',
+                    extension='gif', state='public', body=body)
 
     @classmethod
     def get_metadata_schema(cls):

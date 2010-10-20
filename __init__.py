@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright (C) 2007-2008 Juan David Ibáñez Palomar <jdavid@itaapy.com>
-# Copyright (C) 2008 Nicolas Deram <nicolas@itaapy.com>
+# Copyright (C) 2007-2008 Juan David IBÁÑEZ PALOMAR <jdavid@itaapy.com>
+# Copyright (C) 2008 Nicolas DERAM <nicolas@itaapy.com>
 # Copyright (C) 2010 Armel FORTUN <armel@maar.fr>>
 #
 # This program is free software: you can redistribute it and/or modify

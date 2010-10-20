@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright (C) 2009-2010 Henry Obein <henry@itaapy.com>
-# Copyright (C) 2010 Armel FORTUN <armel@maar.fr>
+# Copyright (C) 2009-2010 Henry OBEIN <henry@itaapy.com>
+# Copyright (C) 2010 Armel FORTUN <armel@tchack.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ from ikaaro.future.order import get_resource_preview
 
 # Import from itws
 from itws.sidebar.diaporama_views import Diaporama_View
-from itws.sidebar.diaporama_views import DiaporamaTable_View, DiaporamaTable_AddRecord
+from itws.sidebar.diaporama_views import DiaporamaTable_AddRecord
 from itws.sidebar.diaporama_views import DiaporamaProxyBox_Edit
 
 
@@ -86,6 +86,22 @@ class Slideviewer_View(Diaporama_View):
                 'target': get_value(record, 'target')
                 })
         self.uid += 1
+        """
+        # Check if the images loading is here!
+        load_image = context.site_root.get_resource('images/loading', soft=True)
+        if load_image is None:
+            print("load_image is None")
+            load_image_resource = context.site_root.get_resource('ui/loading.gif')
+            load_image_data = load_image_resource.to_str()
+            cls = Image
+            filename = name = 'loading.gif'
+            name, extension, language = FileName.decode(name)
+            metadata = {'format': 'image/gif', 'filename': filename,
+                        'extension': extension, 'state': 'public',
+                        'body': favicon_data}
+            cls.make_resource(cls, self, 'images/%s' % name, **metadata)
+            self.set_property('loading', 'images/loading')
+        """
         return namespace
 
 
