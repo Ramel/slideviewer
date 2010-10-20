@@ -4,7 +4,6 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <h3 stl:if="title" class="title">${title}</h3>
   <div id="${cssid}" stl:if="images">
     <ul class="${square}">
       <li stl:repeat="image images">
@@ -21,6 +20,7 @@
       <stl:block stl:if="not show_border">$("div#${cssid}").css("border-color", "#FFF");</stl:block>
     });
   </script>
+  
   <div class="content" stl:if="not images">
     No images to show in the "Slideviewer"!
   </div>
