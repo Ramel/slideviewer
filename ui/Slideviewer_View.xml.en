@@ -4,8 +4,9 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <div id="${cssid}" class="svw" stl:if="images">
-    <ul class="${square}">
+  <h3 stl:if="show_title" class="title">${title}</h3>
+  <div stl:if="images" id="${cssid}" class="svw">
+    <ul class="${border}">
       <li stl:repeat="image images">
         <a>
           <img src="${image/img_path}/;thumb?width=${width}&amp;height=${height}" alt="${image/description}" />
@@ -21,7 +22,7 @@
     });
   </script>
   
-  <div class="content" stl:if="not images">
+  <div stl:if="not images" class="content">
     No images to show in the "Slideviewer"!
   </div>
 

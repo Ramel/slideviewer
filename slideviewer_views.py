@@ -59,8 +59,8 @@ class Slideviewer_View(Diaporama_View):
         namespace['width'] = resource.get_property('width')
         namespace['height'] = resource.get_property('height')
         namespace['border'] = resource.get_property('border')
-        namespace['square'] = resource.get_property('square')
         namespace['show_border'] = resource.get_property('show_border')
+        namespace['show_title'] = resource.get_property('show_title')
 
         ids = list(handler.get_record_ids())
         if not ids:
@@ -86,22 +86,6 @@ class Slideviewer_View(Diaporama_View):
                 'target': get_value(record, 'target')
                 })
         self.uid += 1
-        """
-        # Check if the images loading is here!
-        load_image = context.site_root.get_resource('images/loading', soft=True)
-        if load_image is None:
-            print("load_image is None")
-            load_image_resource = context.site_root.get_resource('ui/loading.gif')
-            load_image_data = load_image_resource.to_str()
-            cls = Image
-            filename = name = 'loading.gif'
-            name, extension, language = FileName.decode(name)
-            metadata = {'format': 'image/gif', 'filename': filename,
-                        'extension': extension, 'state': 'public',
-                        'body': favicon_data}
-            cls.make_resource(cls, self, 'images/%s' % name, **metadata)
-            self.set_property('loading', 'images/loading')
-        """
         return namespace
 
 
@@ -111,18 +95,18 @@ class SlideviewerProxyBox_Edit(DBResource_Edit):
         {"width": Integer,
         "height": Integer,
         "border": Unicode,
-        "square": Unicode,
-        "show_border": Boolean
+        "show_border": Boolean,
+        "show_title": Boolean
         })
 
     widgets = DiaporamaProxyBox_Edit.widgets + [
         TextWidget('width', title=MSG(u'Width (px)'), size=4, maxlength=4),
         TextWidget('height', title=MSG(u'Height (px)'), size=4, maxlength=4),
-        TextWidget('border', title=MSG(u'Image border-color (#FF0000)'),
+        TextWidget('border', title=MSG(u'Slideviewer border color (#FF0000)'),
             size=7, maxlength=7),
-        TextWidget('square', title=MSG(u'Square\'s color (#FF0000)'),
-            size=7, maxlength=7),
-        BooleanRadio('show_border', title=MSG(u'Show images border-color'))
+        BooleanRadio('show_border', title=MSG(u'Show the border arround images')),
+        BooleanRadio('show_title',
+            title=MSG(u'Show the title'))
         ]
 
     def get_value(self, resource, context, name, datatype):
@@ -135,9 +119,9 @@ class SlideviewerProxyBox_Edit(DBResource_Edit):
             return resource.parent.get_property(name)
         if name == 'border':
             return resource.parent.get_property(name)
-        if name == 'square':
-            return resource.parent.get_property(name)
         if name == 'show_border':
+            return resource.parent.get_property(name)
+        if name == 'show_title':
             return resource.parent.get_property(name)
         return DBResource_Edit.get_value(self, resource, context, name,
                                          datatype)
@@ -153,16 +137,16 @@ class SlideviewerProxyBox_Edit(DBResource_Edit):
         width = form['width']
         height = form['height']
         border = form['border']
-        square = form['square']
         show_border = form['show_border']
+        show_title = form['show_title']
         language = resource.get_content_language(context)
         # Set title to menufolder
         resource.parent.set_property('title', title, language=language)
         resource.parent.set_property('width', width)
         resource.parent.set_property('height', height)
         resource.parent.set_property('border', border)
-        resource.parent.set_property('square', square)
         resource.parent.set_property('show_border', show_border)
+        resource.parent.set_property('show_title', show_title)
         # Ok
         context.message = messages.MSG_CHANGES_SAVED
 
@@ -214,7 +198,8 @@ class SlideviewerTable_CompositeView(CompositeForm):
     access = 'is_allowed_to_edit'
 
     subviews = [ # diaporama folder edition view
-                 SlideviewerProxyBox_Edit(title=MSG(u'Edit diaporama title and size')),
+                 SlideviewerProxyBox_Edit(
+                    title=MSG(u'Edit slideviewer title, size and color')),
                  DiaporamaTable_AddRecord(title=MSG(u'Add new image')),
                  SlideviewerTable_View()
                  ]

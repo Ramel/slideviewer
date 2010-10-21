@@ -84,12 +84,15 @@ class Slideviewer(Diaporama):
 
     @classmethod
     def get_metadata_schema(cls):
+        # TODO
+        # In sidebar show_title need to be True
+        # contentbar, False by default
         return merge_dicts(Diaporama.get_metadata_schema(),
             {'width': Integer(default=256),
             'height': Integer(default=256),
             'border': Unicode(default="#FF0000"),
-            'square': Unicode(default="#FF0000"),
-            'show_border': Boolean(default=True)
+            'show_border': Boolean(default=True),
+            'show_title': Boolean(default=False)
             })
 
 
