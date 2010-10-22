@@ -57,7 +57,7 @@ class SlideviewerTable(DiaporamaTable):
 class Slideviewer(Diaporama):
 
     class_id = 'slideviewer'
-    class_version = '20101003'
+    class_version = '20101022'
     class_title = MSG(u'Slideviewer')
     class_description = MSG(u'Slideviewer')
 
@@ -95,6 +95,25 @@ class Slideviewer(Diaporama):
             'show_title': Boolean(default=False)
             })
 
+    def update_20101022(self):
+        if self.has_property('square'):
+            print("Delete 'square' property")
+            self.del_property('square')
+            print("Delete 'square' property to %s" % self.get_property('title'))
+
+    def update_20101021(self):
+        if not self.has_property('show_border'):
+            print("Add 'show_border' property to %s" % self.get_property('title'))
+            self.set_property('show_border', False)
+            print("'show_border' = %s" % self.get_property('show_border'))
+
+    def update_20101020(self):
+        if self.has_property('show_title'):
+            print("'show_title' = %s" % self.get_property('show_title'))
+        else:
+            print("Add 'show_title' property to %s" % self.get_property('title'))
+            self.set_property('show_title', False)
+            print("'show_title' = %s" % self.get_property('show_title'))
 
 ################################################################################
 # Register
