@@ -61,7 +61,6 @@ class Slideviewer_View(Diaporama_View):
         namespace['border'] = resource.get_property('border')
         namespace['show_border'] = resource.get_property('show_border')
         namespace['show_title'] = resource.get_property('show_title')
-        print("namespace['show_title']= %s" % namespace['show_title'])
 
         ids = list(handler.get_record_ids())
         if not ids:
