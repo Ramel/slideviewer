@@ -65,7 +65,8 @@ class Slideviewer_View(Diaporama_View):
         ids = list(handler.get_record_ids())
         if not ids:
             return {'images': {},
-                    'title': title}
+                    'title': title,
+                    'show_title': True}
 
         get_value = handler.get_record_value
         namespace['cssid'] = "%s-%s" % (checkid(title.replace('.','-')), self.uid)
@@ -105,8 +106,7 @@ class SlideviewerProxyBox_Edit(DBResource_Edit):
         TextWidget('border', title=MSG(u'Slideviewer border color (#FF0000)'),
             size=7, maxlength=7),
         BooleanRadio('show_border', title=MSG(u'Show the border arround images')),
-        BooleanRadio('show_title',
-            title=MSG(u'Show the title'))
+        BooleanRadio('show_title', title=MSG(u'Show the title'))
         ]
 
     def get_value(self, resource, context, name, datatype):
