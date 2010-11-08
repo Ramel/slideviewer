@@ -92,7 +92,7 @@ class Slideviewer(Diaporama):
             'height': Integer(default=256),
             'border': Unicode(default="#FF0000"),
             'show_border': Boolean(default=True),
-            'show_title': Boolean(default=False)
+            'show_title': Boolean(default=True)
             })
 
     def update_20101022(self):
