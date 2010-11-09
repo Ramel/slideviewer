@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-11-08 13:11+CET\n"
+"POT-Creation-Date: 2010-11-09 08:11+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,11 +23,11 @@ msgstr ""
 msgid "Edit slideviewer title, size and color"
 msgstr ""
 
-#: ../slideviewer_views.py:104
+#: ../slideviewer_views.py:105
 msgid "Height (px)"
 msgstr ""
 
-#: ../slideviewer_views.py:107
+#: ../slideviewer_views.py:108
 msgid "Show the border arround images"
 msgstr ""
 
@@ -40,11 +40,11 @@ msgstr ""
 msgid "Slideviewer"
 msgstr ""
 
-#: ../slideviewer_views.py:105
+#: ../slideviewer_views.py:106
 msgid "Slideviewer border color (#FF0000)"
 msgstr ""
 
-#: ../slideviewer_views.py:103
+#: ../slideviewer_views.py:104
 msgid "Width (px)"
 msgstr ""
 

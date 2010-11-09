@@ -3,52 +3,54 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-11-08 13:11+CET\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: Slideviewer\n"
+"POT-Creation-Date: 2010-11-09 08:11+CET\n"
+"PO-Revision-Date: 2010-11-09 10:05+0100\n"
+"Last-Translator: FORTUN <armel@maar.fr>\n"
+"Language-Team: Tchack <armel@maar.fr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
 
 #: ../slideviewer_views.py:203
 msgid "Add new image"
-msgstr ""
+msgstr "Ajouter une nouvelle image"
 
 #: ../slideviewer_views.py:202
 msgid "Edit slideviewer title, size and color"
-msgstr ""
-
-#: ../slideviewer_views.py:104
-msgid "Height (px)"
-msgstr ""
-
-#: ../slideviewer_views.py:107
-msgid "Show the border arround images"
-msgstr ""
-
-#: ../slideviewer_views.py:109
-msgid "Show the title"
-msgstr ""
-
-#: ../slideviewer.py:61
-#: ../slideviewer.py:62
-msgid "Slideviewer"
-msgstr ""
+msgstr "Modifier le titre, la taille et la couleur du Slideviewer"
 
 #: ../slideviewer_views.py:105
-msgid "Slideviewer border color (#FF0000)"
-msgstr ""
-
-#: ../slideviewer_views.py:103
-msgid "Width (px)"
-msgstr ""
+msgid "Height (px)"
+msgstr "Hauteur (en px)"
 
 #: ../ui/Slideviewer_View.xml.en:26
 msgctxt "div"
 msgid "No images to show in the \"Slideviewer\"!"
-msgstr ""
+msgstr "Il n'y a pas d'images  dans le \"Slideviewer\"!"
+
+#: ../slideviewer_views.py:108
+msgid "Show the border arround images"
+msgstr "Affiche le bord coloré autour de l'image"
+
+#: ../slideviewer_views.py:109
+msgid "Show the title"
+msgstr "Affiche le titre"
+
+#: ../slideviewer.py:61
+#: ../slideviewer.py:62
+msgid "Slideviewer"
+msgstr "Slideviewer"
+
+#: ../slideviewer_views.py:106
+msgid "Slideviewer border color (#FF0000)"
+msgstr "Couleur de bord du Slideviewer (#FF0000)"
+
+#: ../slideviewer_views.py:104
+msgid "Width (px)"
+msgstr "Largeur (px)"
+
