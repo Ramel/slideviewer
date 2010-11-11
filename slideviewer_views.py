@@ -62,8 +62,8 @@ class Slideviewer_View(Diaporama_View):
         namespace['show_border'] = resource.get_property('show_border')
         namespace['show_title'] = resource.get_property('show_title')
 
-        ids = list(handler.get_record_ids())
-        if not ids:
+        img_ids = list(handler.get_record_ids())
+        if not img_ids:
             return {'images': {},
                     'title': title,
                     'show_title': True}

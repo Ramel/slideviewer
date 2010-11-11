@@ -71,8 +71,8 @@ class Slideviewer(Diaporama):
         Diaporama._make_resource(cls, folder, name, **kw)
         # Check if the loading image is here!
         context = get_context()
-        # XXX from handler level to resource one
-        # to find the site_root and indexing image
+        # XXX from handler level to the resource one,
+        # finding the site_root and indexing image
         site_root = context.site_root
         if site_root.get_resource('images/loading', soft=True) is None:
             path = get_abspath('ui/loading.gif')
@@ -84,9 +84,6 @@ class Slideviewer(Diaporama):
 
     @classmethod
     def get_metadata_schema(cls):
-        # TODO
-        # In sidebar show_title need to be True
-        # contentbar, False by default
         return merge_dicts(Diaporama.get_metadata_schema(),
             {'width': Integer(default=256),
             'height': Integer(default=256),
@@ -115,9 +112,88 @@ class Slideviewer(Diaporama):
             self.set_property('show_title', False)
             print("'show_title' = %s" % self.get_property('show_title'))
 
+
+class SlideviewerPro(Slideviewer):
+
+    class_id = 'slideviewer-pro'
+    class_version = '20101110'
+    class_title = MSG(u'Slideviewer Pro')
+    class_description = MSG(u'Slideviewer Pro')
+
+    view = Slideviewer_View()
+
+    @staticmethod
+    def _make_resource(cls, folder, name, **kw):
+        Slideviewer._make_resource(cls, folder, name, **kw)
+
+    @classmethod
+    def get_metadata_schema(cls):
+        return merge_dicts(Diaporama.get_metadata_schema(),
+            {'width': Integer(default=256),
+            'height': Integer(default=256),
+            'border': Unicode(default="#FF0000"),
+            'show_border': Boolean(default=True),
+            'show_title': Boolean(default=True),
+            ## slideViewerPro options (defaults)
+            # The border width around the main images 
+            'galBorderWidth': Integer(default=6),
+            # The distance that separates the thumbnails
+            # and the buttons from the main images 
+            'thumbsTopMargin': Integer(default=3),
+            # The distance of each thumnail respect to the next one 
+            'thumbsRightMargin': Integer(default=3),            
+            # The border width of each thumbnail.
+            # Note that the border in reality is above, not around 
+            'thumbsBorderWidth': Integer(default=3),            
+            # The width of the prev/next buttons that commands the thumbnails 
+            'buttonsWidth': Integer(default=20),            
+            # The border color around the main
+            'galBorderColor': Unicode(default="#ff0000"),
+            # The border color of the thumbnails but not the current one 
+            'images thumbsBorderColor': Unicode(default="#d8d8d8"),
+            # The border color of the current thumbnail 
+            'thumbsActiveBorderColor': Unicode(default="#ff0000"),
+            # The color of the optional text in leftButtonInner/rightButtonInner 
+            'buttonsTextColor': Unicode(default="#ff0000"),
+            # Could be 0, 0.1 up to 1.0
+            'thumbsBorderOpacity': Decimal(default=1.0),
+            # Could be 0, 0.1 up to 1.0 
+            'thumbsActiveBorderOpacity': Decimal(default=1.0),
+            # The time it takes a slide to move to its position 
+            'easeTime': Integer(default=750),
+            # If autoslide is true, this is the interval between each slide 
+            'asTimer': Integer(default=4000),            
+            # The number of visible thumbnails
+            'thumbs': Integer(default=5),     
+            # The percentual reduction of the thumbnails in relation to the original 
+            'thumbsPercentReduction': Integer(default=12),
+            # With this option set to false,
+            # the whole UI (thumbs and buttons) are not visible
+            'thumbsVis': Boolean(default=True),            
+            # Could be an image "<img src='images/larw.gif' />" or an escaped
+            # char as "&larr;" 
+            'leftButtonInner': Unicode(default="-"),             
+            # could be an image or an escaped char as "&rarr;"
+            'rightButtonInner': Unicode(default="+"),            
+            # By default the slider do not slides automatically.
+            # When set to true REQUIRES the jquery.timers plugin 
+            'autoslide': Boolean(default=False),
+            # The typographic info of each slide.
+            # When set to true, the ALT tag content is displayed 
+            'typo': Boolean(default=False),             
+            # The opacity for typographic info. 1 means fully visible. 
+            'typoFullOpacity': Decimal(default=0.9),
+            # The LI items can be shuffled (randomly mixed) when shuffle is true 
+            'shuffle': Boolean(default=False)
+            })
+
+
 ################################################################################
 # Register
 ################################################################################
 register_resource_class(Slideviewer)
-register_box(Slideviewer, allow_instanciation=True, is_content=True,
-    is_side=True)
+register_resource_class(SlideviewerPro)
+register_box(Slideviewer,
+    allow_instanciation=True, is_content=True, is_side=True)
+register_box(SlideviewerPro,
+    allow_instanciation=True, is_content=True, is_side=True)
