@@ -21,16 +21,19 @@ from itools.gettext import MSG
 from itools.datatypes import Integer, Unicode, Boolean, String
 from itools.core import merge_dicts, get_abspath
 from itools.web import get_context
+from itools.handlers import ro_database, File as FileHandler
 
 # Import from ikaaro
 from ikaaro.registry import register_resource_class
 from ikaaro.table import OrderedTableFile
-from ikaaro.future.menu import Target
+from ikaaro.menu import Target
 from ikaaro.file import Image
+from ikaaro.resource_ import DBResource
 
 # Import from itws
-from itws.repository import register_box
-from itws.sidebar.diaporama import Diaporama, DiaporamaTable, DiaporamaImagePathDatatype
+from itws.bar import register_box
+from itws.bar.diaporama import Diaporama, DiaporamaTable
+from itws.datatypes import ImagePathDataType
 
 from slideviewer_views import Slideviewer_View, SlideviewerTable_CompositeView
 
@@ -40,7 +43,7 @@ class SlideviewerTableFile(OrderedTableFile):
     record_properties = {
         'title': Unicode(multiple=True),
         'description': Unicode(multiple=True),
-        'img_path': DiaporamaImagePathDatatype(multiple=True,
+        'img_path': ImagePathDataType(multiple=True,
             mandatory=True), # multilingual
         'img_link': String,
         'target': Target(mandatory=True, default='_top')}
@@ -61,14 +64,28 @@ class Slideviewer(Diaporama):
     class_title = MSG(u'Slideviewer')
     class_description = MSG(u'Slideviewer')
 
+    # Configuration
+    use_fancybox = False
+    allow_instanciation = True
+    is_content = True
+    is_side = True
+
     # order
     order_class = SlideviewerTable
 
-    view = Slideviewer_View()
+    edit_schema = {
+        'width': Integer(default=256),
+        'height': Integer(default=256),
+        'border': Unicode(default="#FF0000"),
+        'show_border': Boolean(default=True),
+        'show_title': Boolean(default=True)
+        }
 
-    @staticmethod
-    def _make_resource(cls, folder, name, **kw):
-        Diaporama._make_resource(cls, folder, name, **kw)
+    class_schema = merge_dicts(Diaporama.class_schema,
+                                edit_schema)
+
+    def init_resource(self, **kw):
+        Diaporama.init_resource(self, **kw)
         # Check if the loading image is here!
         context = get_context()
         # XXX from handler level to the resource one,
@@ -78,19 +95,14 @@ class Slideviewer(Diaporama):
             path = get_abspath('ui/loading.gif')
             with open(path) as file:
                 body = file.read()
-            Image.make_resource(Image, site_root, 'images/loading',
+            site_root.make_resource('images/loading', Image,
                     format='image/gif', filename='loading.gif',
                     extension='gif', state='public', body=body)
 
-    @classmethod
-    def get_metadata_schema(cls):
-        return merge_dicts(Diaporama.get_metadata_schema(),
-            {'width': Integer(default=256),
-            'height': Integer(default=256),
-            'border': Unicode(default="#FF0000"),
-            'show_border': Boolean(default=True),
-            'show_title': Boolean(default=True)
-            })
+    ##############
+    # Views
+    ##############
+    view = Slideviewer_View()
 
     def update_20101022(self):
         if self.has_property('square'):
@@ -192,8 +204,6 @@ class SlideviewerPro(Slideviewer):
 # Register
 ################################################################################
 register_resource_class(Slideviewer)
-register_resource_class(SlideviewerPro)
-register_box(Slideviewer,
-    allow_instanciation=True, is_content=True, is_side=True)
-register_box(SlideviewerPro,
-    allow_instanciation=True, is_content=True, is_side=True)
+#register_resource_class(SlideviewerPro)
+register_box(Slideviewer)
+#register_box(SlideviewerPro)

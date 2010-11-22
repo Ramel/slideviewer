@@ -28,16 +28,16 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro import messages
-from ikaaro.forms import TextWidget, BooleanRadio
+from ikaaro.autoform import TextWidget, RadioWidget
 from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
 from ikaaro.views import CompositeForm
 from ikaaro.table_views import Table_View, OrderedTable_View
 from ikaaro.future.order import get_resource_preview
 
 # Import from itws
-from itws.sidebar.diaporama_views import Diaporama_View
-from itws.sidebar.diaporama_views import DiaporamaTable_AddRecord
-from itws.sidebar.diaporama_views import DiaporamaProxyBox_Edit
+from itws.bar.diaporama import Diaporama_View
+from itws.bar.menu import MenuSideBarTable_AddRecord
+from itws.bar.menu import MenuProxyBox_Edit
 
 
 class Slideviewer_View(Diaporama_View):
@@ -92,7 +92,7 @@ class Slideviewer_View(Diaporama_View):
 
 class SlideviewerProxyBox_Edit(DBResource_Edit):
 
-    schema = merge_dicts(DiaporamaProxyBox_Edit.schema,
+    schema = merge_dicts(MenuProxyBox_Edit.schema,
         {"width": Integer,
         "height": Integer,
         "border": Unicode,
@@ -100,13 +100,13 @@ class SlideviewerProxyBox_Edit(DBResource_Edit):
         "show_title": Boolean
         })
 
-    widgets = DiaporamaProxyBox_Edit.widgets + [
+    widgets = MenuProxyBox_Edit.widgets + [
         TextWidget('width', title=MSG(u'Width (px)'), size=4, maxlength=4),
         TextWidget('height', title=MSG(u'Height (px)'), size=4, maxlength=4),
         TextWidget('border', title=MSG(u'Slideviewer border color (#FF0000)'),
             size=7, maxlength=7),
-        BooleanRadio('show_border', title=MSG(u'Show the border arround images')),
-        BooleanRadio('show_title', title=MSG(u'Show the title'))
+        RadioWidget('show_border', title=MSG(u'Show the border arround images')),
+        RadioWidget('show_title', title=MSG(u'Show the title'))
         ]
 
     def get_value(self, resource, context, name, datatype):
@@ -200,7 +200,7 @@ class SlideviewerTable_CompositeView(CompositeForm):
     subviews = [ # diaporama folder edition view
                  SlideviewerProxyBox_Edit(
                     title=MSG(u'Edit slideviewer title, size and color')),
-                 DiaporamaTable_AddRecord(title=MSG(u'Add new image')),
+                 MenuSideBarTable_AddRecord(title=MSG(u'Add new image')),
                  SlideviewerTable_View()
                  ]
 
