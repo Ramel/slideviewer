@@ -54,7 +54,7 @@ class Slideviewer_View(Diaporama_View):
         table = resource.get_resource(resource.order_path)
         handler = table.handler
 
-        title = resource.get_title(fallback=False)
+        title = resource.get_title()
         namespace['title'] = title
         namespace['width'] = resource.get_property('width')
         namespace['height'] = resource.get_property('height')
@@ -111,21 +111,62 @@ class SlideviewerProxyBox_Edit(DBResource_Edit):
 
     def get_value(self, resource, context, name, datatype):
         if name == 'title':
-            language = resource.get_content_language(context)
-            return resource.parent.get_property(name, language=language)
+            #language = resource.get_content_language(context)
+            #return resource.parent.get_property(name, language=language)
+            return DBResource_Edit.get_value(self, resource.parent,
+                                            context, name, datatype)
         if name == 'width':
-            return resource.parent.get_property(name)
+            return DBResource_Edit.get_value(self, resource.parent,
+                                            context, name, datatype)
         if name == 'height':
-            return resource.parent.get_property(name)
+            return DBResource_Edit.get_value(self, resource.parent,
+                                            context, name, datatype)
         if name == 'border':
-            return resource.parent.get_property(name)
+            return DBResource_Edit.get_value(self, resource.parent,
+                                            context, name, datatype)
         if name == 'show_border':
-            return resource.parent.get_property(name)
+            return DBResource_Edit.get_value(self, resource.parent,
+                                            context, name, datatype)
         if name == 'show_title':
-            return resource.parent.get_property(name)
+            return DBResource_Edit.get_value(self, resource.parent,
+                                            context, name, datatype)
         return DBResource_Edit.get_value(self, resource, context, name,
                                          datatype)
+    
+    def set_value(self, resource, context, name, form):
+        menu = resource.parent
+        if name == 'title':
+            value = form[name]
+            if type(value) is dict:
+                for language, data in value.iteritems():
+                    menu.set_property(name, data, language=language)
+            else:
+                menu.set_property(name, value)
+            return False
+        if name == 'width':
+            value = form[name]
+            menu.set_property(name, value)
+            return False
+        if name == 'height':
+            value = form[name]
+            menu.set_property(name, value)
+            return False
+        if name == 'border':
+            value = form[name]
+            menu.set_property(name, value)
+            return False
+        if name == 'show_border':
+            value = form[name]
+            menu.set_property(name, value)
+            return False
+        if name == 'show_title':
+            value = form[name]
+            menu.set_property(name, value)
+            return False
+    
+        return DBResource_Edit.set_value(self, resource, context, name, form)
 
+    """
     def action(self, resource, context, form):
         # Check edit conflict
         self.check_edit_conflict(resource, context, form)
@@ -149,7 +190,7 @@ class SlideviewerProxyBox_Edit(DBResource_Edit):
         resource.parent.set_property('show_title', show_title)
         # Ok
         context.message = messages.MSG_CHANGES_SAVED
-
+    """
 
 class SlideviewerTable_View(OrderedTable_View):
 
@@ -204,14 +245,18 @@ class SlideviewerTable_CompositeView(CompositeForm):
                  SlideviewerTable_View()
                  ]
 
-    context_menus = [EditLanguageMenu()]
+    def get_context_menus(self):
+        return [ EditOnlyLanguageMenu(view=self) ]
+
+    def _get_query_to_keep(self, resource, context):
+        """Return a list of dict {'name': name, 'value': value}"""
+        return []
 
     def get_namespace(self, resource, context):
         # XXX Force GET to avoid problem in STLForm.get_namespace
         # side effect unknown
         real_method = context.method
         context.method = 'GET'
-        views = [ view.GET(resource, context) for view in
-        self.subviews ]
+        views = [ view.GET(resource, context) for view in self.subviews ]
         context.method = real_method
         return {'views': views}
