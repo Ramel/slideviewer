@@ -23,9 +23,13 @@
   left: 0;
   top: 0;
   width: 1%;
-  list-style-type: none;
+}
+#wrapper .stripViewer UL LI,
+#wrapper .stripTransmitter UL LI {
+  list-style: none outside none;
 }
 .stripViewer UL LI {
+  list-style: none;
   float: left;
 }
 .stripViewer UL LI A {
@@ -42,7 +46,7 @@
   margin: 0;
   padding: 0;
   position: relative;
-  list-style-type: none;
+  list-style: none;
 }
 .stripTransmitter UL LI {
   width: 20px;
