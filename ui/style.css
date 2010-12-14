@@ -15,7 +15,8 @@
   border: 5px solid #ff0000;
   margin: 0 0 1px 0;
 }
-.stripViewer UL {
+.stripViewer UL,
+#wrapper .stripViewer UL {
   /* this is your UL of images */
   margin: 0;
   padding: 0;
@@ -24,6 +25,8 @@
   top: 0;
   width: 1%;
 }
+.stripViewer UL LI,
+.stripTransmitter UL LI,
 #wrapper .stripViewer UL LI,
 #wrapper .stripTransmitter UL LI {
   list-style: none outside none;
@@ -42,7 +45,8 @@
   overflow: auto;
   width: 1%;
 }
-.stripTransmitter UL {
+.stripTransmitter UL,
+#wrapper .stripTransmitter UL {
   margin: 0;
   padding: 0;
   position: relative;
